@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
     <title>Weather</title>
 
     <link
@@ -18,7 +17,8 @@
       integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
       crossorigin="anonymous"
     ></script>
-
+    
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
@@ -27,45 +27,55 @@
 </head>
   <body>
    <div class="container"  style="width: 30rem ;">    
-    <div class="card border-0 shadow p-3 mb-5 bg-body rounded">
+    <div class="card border-0 shadow p-3 mb-5 bg-body rounded card-border">
       <div class="card-body">
           <form class="search-form" id="search-form">              
           <h1> <img src="img/haze-day.svg" width="90rem">Weather</h1>            
-            <div class="col">
-                <div class="mb-3">
+            <div class="col mb-3">
                   <input
                     type="search"
                     class="form-control border border-white shadow p-2 mb-4"
-                    id="search-input"
+                    id="city-input"
                     placeholder="Type a city..." 
                   />
                   <input class="col-3 btn btn-primary btn-sm shadow p-2 mb-4" type="submit" value="Search" id="search-button"> 
                   <input class="col-3 btn btn-primary btn-sm shadow p-2 mb-4" type="submit" value="Current" id="current-button"> 
                 </div>
-              </div>
             </form> 
-               
             <form>          
-              <h2></h2>
-              <p class="city" id="city"></p>
-                <span class="temperature" id="temp"></span>
-                 <span class="units">
-                   <a href="#" id="celsius">°C</a> | 
-                   <a href="#" id="fahrenheit">°F</a>
-                   </span>  
-            </form> 
-
+              <h2 id="date"></h2>
+              <p class="city mb-2" id="city"></p>
           <div class="row">
-            <div class="col-10">Monday</div>
-            <div class="col-2">11°C</div>
-            <div class="col-10">Tuesday</div>
-            <div class="col-2">12°C</div>
-            <div class="col-10">Wednesday</div>
-            <div class="col-2">13°C</div>
-            <div class="col-10">Thursday</div>
-            <div class="col-2">14°C</div>
-            <div class="col-10">Friday</div>
-            <div class="col-2">15°C</div>
+            <div class="col-8">
+              <div class="d-flex weather-temperature">
+                <img src="" alt="cloudy" id="icon" class="float-left" />
+                  <strong class="temperature" id="temp"></strong
+                  ><span class="units">
+                    <div class="float-left">
+                   <a href="#" id="celsius" class="active"> °C | <a href="#" id="fahrenheit"> °F</a></span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <ul>
+                <li id="description"> Cloudy</li>
+                <li>Humidity: <span id="humidity"></span>%</li>
+                <li>Wind: <span id="wind"></span> km/h</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-10 weekdays">Monday</div>
+            <div class="col-2 weekday-temp">11°C</div>
+            <div class="col-10 weekdays">Tuesday</div>
+            <div class="col-2 weekday-temp">12°C</div>
+            <div class="col-10 weekdays">Wednesday</div>
+            <div class="col-2 weekday-temp">13°C</div>
+            <div class="col-10 weekdays">Thursday</div>
+            <div class="col-2 weekday-temp">14°C</div>
+            <div class="col-10 weekdays">Friday</div>
+            <div class="col-2 weekday-temp">15°C</div>
          </div> 
           </div>
         </div>

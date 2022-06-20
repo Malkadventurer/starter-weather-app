@@ -1,91 +1,85 @@
-let now = new Date();
+function formatDate(timestamp) {
+  let now = new Date(timestamp);
 
-let h2 = document.querySelector("h2");
+  let h2 = document.querySelector("#date");
 
-let date = now.getDate();
+  let date = now.getDate();
 
-let days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-let day = days[now.getDay()];
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let day = days[now.getDay()];
 
-let months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-let month = months[now.getMonth()];
+  let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  let month = months[now.getMonth()];
 
-let hour = now.getHours();
+  let hour = now.getHours();
 
-let minutes = now.getMinutes();
-if (minutes < 10) {
-  minutes = `0${minutes}`;
+  let minutes = now.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  return `${day} ${month} ${date}, ${hour}:${minutes}`;
 }
-
-h2.innerHTML = `${day} ${month} ${date}, ${hour}:${minutes}`;
-
-function fahrenheitMath(event) {
-  event.preventDefault();
-  let temperature = document.querySelector(".temperature");
-  let degree = temperature.innerHTML;
-  temperature.innerHTML = Math.round((degree * 9) / 5 + 32);
-}
-let fahrenheit = document.querySelector("#fahrenheit");
-fahrenheit.addEventListener("click", fahrenheitMath);
-
-function changeCelsius(event) {
-  event.preventDefault();
-  let temperatureNumber = document.querySelector(".temperature");
-  temperatureNumber.innerHTML = "19";
-}
-let celsiusChange = document.querySelector("#celsius");
-celsiusChange.addEventListener("click", changeCelsius);
-
-function changeFahrenheit(event) {
-  event.preventDefault();
-  let temperatureNumber = document.querySelector(".temperature");
-  temperatureNumber.innerHTML = "66";
-}
-let fahrenheitChange = document.querySelector("#fahrenheit");
-fahrenheitChange.addEventListener("click", changeFahrenheit);
 
 //
+//
 
-function displayWeatherConditon(response) {
-  console.log(response.data);
-  document.querySelector("#city").innerHTML = response.data.name;
-  document.querySelector("#temp").innerHTML = Math.round(
-    response.data.main.temp
+function displayTemperature(response) {
+  let temperatureElement = document.querySelector("#temp");
+  let cityElement = document.querySelector("#city");
+  let descriptionElement = document.querySelector("#description");
+  let humidityElement = document.querySelector("#humidity");
+  let windElement = document.querySelector("#wind");
+  let dateElement = document.querySelector("#date");
+  let iconElement = document.querySelector("#icon");
+
+  celsiusTemperature = response.data.main.temp;
+
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+  cityElement.innerHTML = response.data.name;
+  descriptionElement.innerHTML = response.data.weather[0].description;
+  humidityElement.innerHTML = response.data.main.humidity;
+  windElement.innerHTML = Math.round(response.data.wind.speed);
+  dateElement.innerHTML = formatDate(response.data.dt * 1000);
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
+  iconElement.setAttribute("alt", response.data.weather[0].description);
 }
 
-function searchCity(city) {
+function search(city) {
   let apiKey = "5df8aef5bdd4c12142826a987f87c062";
-
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(displayWeatherConditon);
+
+  axios.get(apiUrl).then(displayTemperature);
 }
 
 function handleSubmit(event) {
   event.preventDefault();
-  let city = document.querySelector("#search-input").value;
-  searchCity(city);
+  let cityInputElement = document.querySelector("#city-input");
+  search(cityInputElement.value);
 }
 
 //
@@ -95,8 +89,7 @@ function searchLocation(position) {
   let apiKey = "5df8aef5bdd4c12142826a987f87c062";
   let units = "metric";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=${units}&appid=${apiKey}`;
-  axios.get(apiUrl).then(displayWeatherConditon);
-  console.log(apiUrl);
+  axios.get(apiUrl).then(displayTemperature);
 }
 
 function getCurrentLocation(event) {
@@ -104,9 +97,39 @@ function getCurrentLocation(event) {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
-let currentCity = document.querySelector("#search-form");
-currentCity.addEventListener("submit", handleSubmit);
+//
+//
+
+function changeFahrenheit(event) {
+  event.preventDefault();
+  let temperatureElement = document.querySelector("#temp");
+  celsius.classList.remove("active");
+  fahrenheit.classList.add("active");
+  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
+  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
+}
+let fahrenheit = document.querySelector("#fahrenheit");
+fahrenheit.addEventListener("click", changeFahrenheit);
+
+function changeCelsius(event) {
+  event.preventDefault();
+  let temperatureElement = document.querySelector("#temp");
+  celsius.classList.add("active");
+  fahrenheit.classList.remove("active");
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+}
+let celsiusChange = document.querySelector("#celsius");
+celsiusChange.addEventListener("click", changeCelsius);
+
+let celsiusTemperature = null;
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
+
+let fahrenheitChange = document.querySelector("#fahrenheit");
+fahrenheitChange.addEventListener("click", changeFahrenheit);
 
 let currentLocationButton = document.querySelector("#current-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
-searchCity("London");
+
+search("Tokyo");
