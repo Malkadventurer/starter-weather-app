@@ -93,7 +93,14 @@ p {
   top: 25px;
   color: #ffffff;
 }
-
+.weather-max {
+  font-weight: bolder;
+}
+#description,
+#humidity-element,
+#wind-element {
+  font-weight: bolder;
+}
 ul {
   position: relative;
   top: 20px;
