@@ -42,9 +42,6 @@ function formatDate(timestamp) {
   return `${day} ${month} ${date}, ${hour}:${minutes}`;
 }
 
-//
-//
-
 function displayTemperature(response) {
   let temperatureElement = document.querySelector("#temp");
   let cityElement = document.querySelector("#city");
@@ -82,9 +79,6 @@ function handleSubmit(event) {
   search(cityInputElement.value);
 }
 
-//
-//
-
 function searchLocation(position) {
   let apiKey = "5df8aef5bdd4c12142826a987f87c062";
   let units = "metric";
@@ -97,37 +91,8 @@ function getCurrentLocation(event) {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
-//
-//
-
-function changeFahrenheit(event) {
-  event.preventDefault();
-  let temperatureElement = document.querySelector("#temp");
-  celsius.classList.remove("active");
-  fahrenheit.classList.add("active");
-  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
-  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
-}
-let fahrenheit = document.querySelector("#fahrenheit");
-fahrenheit.addEventListener("click", changeFahrenheit);
-
-function changeCelsius(event) {
-  event.preventDefault();
-  let temperatureElement = document.querySelector("#temp");
-  celsius.classList.add("active");
-  fahrenheit.classList.remove("active");
-  temperatureElement.innerHTML = Math.round(celsiusTemperature);
-}
-let celsiusChange = document.querySelector("#celsius");
-celsiusChange.addEventListener("click", changeCelsius);
-
-let celsiusTemperature = null;
-
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
-
-let fahrenheitChange = document.querySelector("#fahrenheit");
-fahrenheitChange.addEventListener("click", changeFahrenheit);
 
 let currentLocationButton = document.querySelector("#current-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
